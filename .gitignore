@@ -111,6 +111,15 @@ ENV/
 env.bak/
 venv.bak/
 
+# Local configuration files
+config.ini
+local_config.py
+
+# CSV output files
+*.csv
+duplicates_*.csv
+contacts_*.csv
+
 # Spyder project settings
 .spyderproject
 .spyproject

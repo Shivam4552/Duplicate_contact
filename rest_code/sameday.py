@@ -1,16 +1,27 @@
 import os
+import sys
 import requests
 import time
 from datetime import datetime, timezone, timedelta
 from dateutil import parser
 from collections import defaultdict
 
-# ========== CONFIG ==========
-HUBSPOT_TOKEN = os.getenv('HUBSPOT_TOKEN', 'your-hubspot-token-here')
-HEADERS = {
-    "Authorization": f"Bearer {HUBSPOT_TOKEN}",
-    "Content-Type": "application/json"
-}
+# Add parent directory to path for importing config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Load configuration
+try:
+    from config import HEADERS, HUBSPOT_TOKEN
+    print("✅ Using centralized configuration")
+except ImportError:
+    # Fallback to direct environment variable
+    HUBSPOT_TOKEN = os.getenv('HUBSPOT_TOKEN', 'your-hubspot-token-here')
+    HEADERS = {
+        "Authorization": f"Bearer {HUBSPOT_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    if HUBSPOT_TOKEN == 'your-hubspot-token-here':
+        print("❌ Please set HUBSPOT_TOKEN environment variable or run setup.py")
 
 # Date range - TODAY ONLY
 TODAY = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
